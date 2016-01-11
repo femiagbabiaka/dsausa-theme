@@ -1,0 +1,230 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://www.facebook.com/2008/fbml" xmlns:og="http://ogp.me/ns#" xml:lang="en" lang="en">
+  
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>{{ page_title }}</title>
+    
+    <link rel="stylesheet" href="theme.scss" type="text/css" />
+    {{ content_for_header }}
+    <script type="text/javascript" src="slides_alt.jquery.js"></script>
+    <script>
+      $(document).ready(function(){ 
+        $("#slides_custom").slides({
+          preload: true,
+          generatePagination: false,
+          play: 15000,
+          effect: 'slide',
+          pagination: false,
+        });
+      });
+    </script> 
+    
+    <script type="text/javascript">
+      var menuTimer = null;
+      function startMenuCloseTimer(content, nav) {
+        menuTimer = window.setTimeout(function () {
+          if (content) {
+            content.animate({"margin-top": "0px"});
+          }
+          var active = $(".active_drop, .active_drop_left").find("span");
+          active.show();
+          active.animate({'opacity': "1"});
+
+          $(".drop > a, .drop_left > a").css({"color": "#666"});
+          var nav_span = nav.find("span");
+          nav_span.animate({"opacity": 0});
+          nav_span.hide();
+        }, 800);
+      }
+      function stopMenuCloseTimer() {
+        window.clearTimeout(menuTimer);
+      }
+      $(document).ready(function() {
+        $("ul#topnav li.drop, ul#topnav li.drop_left").hover(function() { 
+          var others = $(".drop, .drop_left").not(this).find("span");
+          others.animate({'opacity': "0"});
+          others.hide();
+          var active = $(".active_drop, .active_drop_left").find("span");
+          active.animate({'opacity': "0"});
+          active.hide();
+          stopMenuCloseTimer();
+          {% if page.is_homepage? %}
+          $("#slides_custom").animate({"margin-top": "26px"});
+          {% endif %}
+            $(".drop > a, .drop_left > a").css({"color": "#666"});
+            $(this).find("a").first().css({"color": "black"});
+           var this_span = $(this).find("span");
+           this_span.show();
+           this_span.animate({"opacity": 1}); //Show the subnav
+          } , function() { //on hover out...
+            {% if page.is_homepage? %}
+            startMenuCloseTimer($("#slides_custom"), $(this));
+            {% else %}
+            startMenuCloseTimer(null, $(this));
+            {% endif %}
+            });
+          });
+    </script>
+
+    <script>
+  (function() {
+    var cx = '010903528041649108937:osbcyc2c-68';
+    var gcse = document.createElement('script'); gcse.type = 'text/javascript'; gcse.async = true;
+    gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+        '//www.google.com/cse/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(gcse, s);
+  })();
+</script>    
+  </head>
+  
+  {% if site.has_background_image? %}
+  <body style="background: url({{ site.background_image_url }}); background-position: top left; background-attachment: fixed;">
+    {% else %}
+    <body>
+      {% endif %}
+      
+      <div id="body" class="page_{{ request.template }} {{ site.slug }} {{ page.slug }} level{{ page.level }}">
+        
+        <div align="center">
+          <div class="width_container">
+            <div id="header">
+              <div id="header_wrap">
+                <table cellpadding="0" cellspacing="0" width="960">
+                  <tr>
+                    <td valign="top" align="left">
+                      <a href="{{ site.full_url}}">
+                        {% case site.slug %}
+                        {% when "dsausa" %}
+                        <img id="logo" width="154" height="162" src="logo.png" /></a>
+                        <a id="header_inlay" target="_blank" href="http://www.ydsusa.org/">YDS<span id="header_inlay_2">Young Democratic Socialists of America</span></a>                      
+                        {% when "yds" %}
+                        <img id="logo" width="154" height="162" src="logo_yds.png" /></a>
+                        <a id="header_inlay" target="_blank" href="http://www.dsausa.org/">DSA<span id="header_inlay_2">Democratic Socialists of America</span></a>                      
+                        {% when "dl" %}
+                      <img id="logo" width="154" height="162" src="logo.png" /></a>
+                        <a id="header_inlay" href="http://dsausa.nationbuilder.com">DSA</a>
+                        {% when "fund" %}
+                  <img id="logo" width="154" height="162" src="logo_dsafund.png" /></a>
+                        <a id="header_inlay" href="http://dsausa.nationbuilder.com">DSA</a>                      
+                        {% endcase %}
+                        
+                {% if site.slug == 'fund' %}
+                <h1 id="site_headline"><a href="{{ site.full_url }}">DSA <span style="letter-spacing:0;">Fund</span></a></h1>
+                {% else %}
+                        <h1 id="site_headline"><a href="{{ site.full_url }}">{{ site.headline }}</a></h1>
+                {% endif %}
+                <h2 id="site_subheadline"><a href="{{ site.full_url }}">{{ site.subheadline }}</a></h2>
+                    </td>
+                    <td valign="top" align="right">
+                      <div class="header_signup_container">
+                        <div class="social_header">
+                          <a id="fb_follow" href="{{ site.broadcaster.facebook_page_profile_url }}"><span></span> follow us on Facebook</a>
+                          <a id="twitter_follow" href="{{ site.broadcaster.twitter_profile_url }}"><span></span> follow us on Twitter</a>
+                          <script type="text/javascript">
+                            $(document).ready(function () {
+                              $("#search_disable").css({"opacity": 0});
+                            });
+                            function searchFake() {
+                              $("#search_disable").css({"opacity": 1});
+                              $("#search_disable").animate({"opacity": 0}, 1500);
+                            }
+                          </script>
+
+                          <!--                          
+
+<gcse:searchbox></gcse:searchbox>
+-->
+                          <form action="http://dsausa.nationbuilder.com/search_results" id="cse-search-box">
+                            <div>
+                              <input type="hidden" name="cx" value="010903528041649108937:osbcyc2c-68" />
+                              <input type="hidden" name="ie" value="UTF-8" />
+                              <input type="text" name="q" size="31" />
+                              <input type="submit" name="sa" value="Search" />
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                      {% if request.logged_in? %}
+                      {% else %}
+                      
+                      
+                        {% if false %}
+                          {% if site.has_signup_page? %}
+                          <div class="header_signup_container">{% include "signup_form" with site.signup_page %}</div>
+                          {% endif %}
+                        {% endif %}
+                      {% endif %}
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>  
+          </div>
+        </div>
+        
+        <div class="width_container">
+          
+          {% include "nav" %}
+          
+          {% if site.has_background_image? %}
+          <div class="background_border">
+            {% endif %}
+            <div id="middle">
+
+              <!-- <gcse:searchresults></gcse:searchresults> -->
+              
+              {% if request.is_sidebar? %}
+              {% include "columns_2" %}
+              {% else %}
+              {% include "columns_1" %}
+              {% endif %}
+              
+              {% if site.has_background_image? %}
+            </div>
+            {% endif %}
+          </div>
+          {{ content_for_footer }}
+          
+        <div id="footer">
+          <div class="width_container">
+            <div id="dsafund_inset">
+              {% subpage "fund" with "basic_content" %}
+            </div>
+            
+            <div class="footer_container">
+              
+              {% if site.footer_content.size > 0 %}
+              <div id="footer_content">
+                {{ site.footer_content }}
+              </div>
+              {% endif %}
+              
+              <!-- The NationBuilder link below is required. 
+If it is removed, we may add it back ourselves.
+You can style it or move it in different ways, 
+but please leave it in the footer. -->
+              <div id="created_with_nationbuilder">
+                Created with <a href="http://nationbuilder.com/">NationBuilder</a>.
+              </div>
+              
+              
+              <div id="footer_signin">
+                <a href="/customer_service">Customer Service</a> | <a href="/privacy_policy">Privacy Policy</a>
+                {% comment %}
+                {% if request.logged_in? %}
+                <!-- Hi <a href="{{ request.current_signup.settings_url }}">{{ request.current_signup.name_or_email }}</a>. --> View your <a href="{{ request.current_signup.profile_url }}">public profile</a>, <a href="{{ request.current_signup.settings_url }}">account settings</a>, or <a href="{{ request.current_signup.logout_url }}">sign out</a>.  
+                {% else %}
+                Sign in with <a href="{{ request.facebook_connect_url }}">Facebook</a>, <a href="{{ request.twitter_connect_url }}">Twitter</a> or <a href="/login">email</a>.
+                {% endif %}
+                {% endcomment %}
+              </div>
+              
+            </div>
+          </div>  
+          
+        </div>
+      </div>
+      </div>
+    </body>
+  </html>

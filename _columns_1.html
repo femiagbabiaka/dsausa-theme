@@ -1,0 +1,29 @@
+{% include "features" %}
+
+<!--
+  <div class="columns_1_flash">{{ content_for_notifications }}</div>
+  
+<div class="single_column">
+  <div class="content_{{ request.template }}">
+{% comment %} {% yield %} {% endcomment %}
+  </div>
+</div>
+-->
+
+<div class="twocolumn_container">
+  <div id="normal_spacer"></div>  
+  <div class="left_column">
+
+  <div class="content_{{ request.template }}">
+  {% yield %}
+
+    </div>
+  </div>
+  <div class="right_column">
+    {% if request.logged_in? %}
+    {% include "supporter_nav" %}
+    {% else %}
+    {% include "sidebar_buttons" %}
+    {% endif %}
+    </div>
+  </div>

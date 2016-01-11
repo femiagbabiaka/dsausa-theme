@@ -1,0 +1,51 @@
+		<div class="page_excerpt padbottom" id="blog_post_page_{{ subpost.id }}">
+      <a name="{{ subpost.id }}"></a>
+	  
+			<h4><a href="{{ subpost.url }}">{{ subpost.headline }}</a></h4>
+		
+			<div class="padtopless">
+  			<div class="byline">
+          {% if subpost.has_author? or subpost.published_at %}
+          Posted {% if subpost.has_author? %} by {{ subpost.author.published_name_linked }} <span class="pc">{{ subpost.author.capital_amount_format }}</span> {% endif %} on <span class="date">{{ subpost.published_at | date: '%m.%d.%y' }}</span>
+{% if site.has_rule_page? and false %}&middot; <a href="{{ page.flag_url }}" class="get flag">Flag</a>{% endif %}
+  <br/>
+          {% endif %}
+          {{ "Share" | share_button page_id: subpost.id }}
+        
+<!--        <a class="print" href="{{ subpost.url }}"><span></span>Print</a> -->
+
+    {% for attachment in subpost.attachments %}
+          {% case attachment.content_type %}
+      {% when 'application/pdf' %}
+        <a class="download_pdf" href="{{ attachment.url }}"><span></span>Download PDF</a>
+      {% when 'application/msword' %}
+        <a class="download_pdf" href="{{ attachment.url }}"><span></span>Download DOC</a>
+      {% when 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' %}
+        <a class="download_pdf" href="{{ attachment.url }}"><span></span>Download DOCX</a>
+          {% endcase %}
+    {% endfor %}
+
+
+        </div>
+			</div>
+		
+			<div class="excerpt">
+				{{ subpost.blog_post.content }}
+        {% if subpost.faq.content.size > 0 %}
+            {{ subpost.faq.content }}
+        {% endif %}
+        {% if subpost.blog_post.is_extended? %}
+				  <span class='read_more'><a href='{{ subpost.url }}'>Read more</a></span>
+				{% endif %}
+      </div>
+		  
+			{% if subpost.show_stream? %}
+				{% if subpost.public_activities_count > 0 %}
+			  <span class="small_button"><a href="{{ subpost.url }}#addreaction"><img src="{{ 'fugue-balloons' | icon_url }}" width="12" height="12" class="reaction_icon_pad" />{{ subpost.public_activities_count }} reaction{% if subpost.public_activities_count > 1 %}s{% endif %}</a></span>
+			  {% else %}
+			  <span class="small_button"><a href="{{ subpost.url }}#addreaction"><img src="{{ 'fugue-balloons' | icon_url }}" width="12" height="12" class="reaction_icon_pad" />Add your reaction</a></span>
+			  {% endif %}
+			{% endif %}
+	  
+	
+			</div>

@@ -1,0 +1,13 @@
+<div class="blog_entry">
+  <div class="blog_headline"><div class="block"></div><h1><a href="{{ page.url }}">{{ page.headline }}</a></h1></div>
+<div class="blog_teaser">
+  {% for attachment in page.attachments %}
+    {% if attachment.content_type == 'image/jpeg' %}
+      <img src="{{ attachment.url }}"/>
+    {% endif %}
+  {% endfor %}
+  {{ page.excerpt }}
+  <br/>
+  <p><a href="{{ page.url }}">Read more.</a></p>
+</div>
+</div>

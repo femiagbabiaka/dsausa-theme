@@ -1,0 +1,101 @@
+{% include "breadcrumbs" %}
+
+<!-- only show the page's headline if this is a blog that allows public posting -->
+{% if page.headline.size > 0 %} <!-- and page.blog.is_posting_public? %} -->
+	<div id="headline">
+		<h1>{{ page.headline }}</h1>
+	</div>
+{% endif %}
+
+  {% if page.blog.is_posting_public? %}
+  <div id="blog_description">
+		 {{ page.blog.public_posting_prompt }}
+  </div>
+  {% endif %}
+  {% for tag in page.tags %}
+    {% if tag.name == 'resources' %}
+      <ul id="index">
+      {% for post in page.blog.most_recent_blog_posts %}
+        <li><a href="#{{ post.id }}">{{ post.headline }}</a></li>
+    {% endfor %}
+    </ul>
+
+    {% capture more_link %}{{ page.blog.most_recent_blog_posts | paginate }}{% endcapture %}
+    {% if more_link.size > 0 %}
+    <div id="paginate_top">
+    {{ more_link | replace: 'Next', 'More articles' }}
+    </div>
+    {% endif %}
+  {% endif %}
+{% endfor %}
+
+
+<div id="content">  
+	<div class="blog" id="blog_page_{{ page.id }}">
+	{% for post in page.blog.most_recent_blog_posts %}
+		<div class="page_excerpt padbottom" id="blog_post_page_{{ post.id }}">
+      <a name="{{ post.id }}"></a>
+	  
+			<h3><a href="{{ post.url }}">{{ post.headline }}</a></h3>
+		
+			<div class="padtopless">
+  			<div class="byline">
+          {% if post.has_author? or post.published_at %}
+          Posted {% if post.has_author? %} by {{ post.author.published_name_linked }} <span class="pc">{{ post.author.capital_amount_format }}</span> {% endif %} on <span class="date">{{ post.published_at | date: '%m.%d.%y' }}</span>
+{% if site.has_rule_page? and false %}&middot; <a href="{{ page.flag_url }}" class="get flag">Flag</a>{% endif %}
+  <br/>
+          {% endif %}
+          {{ "Share" | share_button page_id: post.id }}
+        
+<!--        <a class="print" href="{{ post.url }}"><span></span>Print</a> -->
+
+    {% for attachment in post.attachments %}
+          {% case attachment.content_type %}
+      {% when 'application/pdf' %}
+        <a class="download_pdf" href="{{ attachment.url }}"><span></span>Download PDF</a>
+      {% when 'application/msword' %}
+        <a class="download_pdf" href="{{ attachment.url }}"><span></span>Download DOC</a>
+      {% when 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' %}
+        <a class="download_pdf" href="{{ attachment.url }}"><span></span>Download DOCX</a>
+          {% endcase %}
+    {% endfor %}
+
+
+        </div>
+			</div>
+		
+			<div class="excerpt">
+				{{ post.blog_post.content }}
+        {% if post.faq.content.size > 0 %}
+            {{ post.faq.content }}
+        {% endif %}
+      {% for event in post.calendar.events_upcoming %}
+        {% include "event" %}
+      {% endfor %}
+        {% if post.blog_post.is_extended? %}
+				  <span class='read_more'><a href='{{ post.url }}'>Read more</a></span>
+				{% endif %}
+        {% if post.has_children? and post.slug == 'latest_news' %}
+          {% for subpost in post.children %}
+            {% include "sub_blog_post" %}
+          {% endfor %}
+        {% endif %}
+      </div>
+		  
+			{% if post.show_stream? %}
+				{% if post.public_activities_count > 0 %}
+			  <span class="small_button"><a href="{{ post.url }}#addreaction"><img src="{{ 'fugue-balloons' | icon_url }}" width="12" height="12" class="reaction_icon_pad" />{{ post.public_activities_count }} reaction{% if post.public_activities_count > 1 %}s{% endif %}</a></span>
+			  {% else %}
+			  <span class="small_button"><a href="{{ post.url }}#addreaction"><img src="{{ 'fugue-balloons' | icon_url }}" width="12" height="12" class="reaction_icon_pad" />Add your reaction</a></span>
+			  {% endif %}
+			{% endif %}
+	  
+	
+			</div>
+		
+	{% endfor %}
+	</div>
+
+	{{ page.blog.most_recent_blog_posts | paginate }}
+
+</div>

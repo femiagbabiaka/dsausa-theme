@@ -1,0 +1,62 @@
+{% if page.features_count > 0 %}
+
+	{% if page.features.size > 0 %}
+
+	<div id="page_features">
+
+		{% if page.features.size == 1 %}
+		
+			{% for feature in page.features %}
+				<div>
+				<a href="{{ feature.page.url }}">
+				<img src="{{ feature.image_url }}" height="{{ feature.image_height }}" width="{{ feature.image_width }}"/>
+				</a>
+				</div>
+			{% endfor %}
+		
+		{% else %}
+          		<div class="slides_sidebars"></div>
+          		<div class="slides_sidebars"></div>
+	               <div id="slides_custom">
+                                  <a id="join_us" href="/join">Join Us</a>
+                                  <a id="donate" href="/donate">Donate</a>
+                                   <a class="prev" href="#">Prev</a>
+                                                  
+                                   <a class="next" href="#">Next</a>
+                         <div class="slides_container">
+
+					{% for feature in page.features %}
+						<div>
+						{% if feature.headline.size > 0 %}
+                {% if feature.headline contains ' // ' %}
+              <div class="features_headline">{{ feature.headline | split:' // ' | first }}
+                <div class="attribution">{{ feature.headline | split:' // ' | last | replace: ' [DHC]', '<br/>DSA Honorary Chair' }}</div>
+              </div>
+                {% else %}
+              <div class="features_headline">{{ feature.headline }}</div>                                                  
+                {% endif %}
+						{% endif %}
+						<img src="{{ feature.image_url }}" height="{{ feature.image_height }}" width="980"/>
+
+                                                </div>
+					{% endfor %}
+				</div>
+
+
+<!--				<div class="features_pagination">
+					<ul>
+					{% for feature in page.features %}
+						<li><a href="{{ feature.page.url }}">{{ feature.name }}</a></li>
+					{% endfor %}
+					</ul>
+				</div>
+-->	
+			</div>
+
+		{% endif %}
+
+	</div>
+  
+	{% endif %}
+
+{% endif %}

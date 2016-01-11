@@ -1,0 +1,8 @@
+<div style="margin-left: -200px;">
+ <h3>Upcoming Events</h3>
+<div class="content_pages_show_calendar">
+{% for event in page.calendar.events_upcoming limit:3 %}
+    {% include "event" %}
+{% endfor %}
+</div>
+</div>

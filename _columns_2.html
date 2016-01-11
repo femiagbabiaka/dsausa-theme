@@ -1,0 +1,69 @@
+<div class="twocolumn_container">
+  {% if page.is_homepage? and (site.slug == 'dsausa' or site.slug == 'yds') %} 
+  {% include "features" %}
+  {% else %}
+  <div id="normal_spacer"></div>  
+  {% endif %}
+  <!-- left column begins -->
+  <div class="left_column">
+    
+    {{ content_for_notifications }}
+    
+    <div class="content_{{ request.template }}">
+      {% yield %}
+    </div>
+    
+  </div>
+  <!-- left column ends -->
+  
+  <!-- right column begins -->
+  <div class="right_column">
+    
+    {% if request.logged_in? %}
+    
+    {% include "supporter_nav" %}
+    
+    {% else %}  
+      {% include "sidebar_buttons" %} 
+    
+    
+    {% if site.has_facebook_page? %}
+    <div class="padtopmore">
+      <fb:like-box id="fb-like-box" href="{{ site.broadcaster.facebook_page_profile_url }}" width="240" show_faces="true" stream="false" header="false" colorscheme="{{ site.facebook_colorscheme }}"></fb:like-box>
+    </div>
+    {% else %}
+    <hr />
+    <fb:like href="{{ site.url }}" width="240" colorscheme="{{ site.facebook_colorscheme }}"></fb:like>
+    {% endif %}
+    
+    {% if site.has_twitter? %}
+    <div align="center" class="padtopmore">
+      <div class="twitter_link"><a href="{{ site.broadcaster.twitter_profile_url }}" class="twitter-follow-button" />Follow @{{ site.broadcaster.twitter_login }} on Twitter</a></div>
+  </div>
+  {% else %}
+  
+  {% endif %}
+  
+  {% if page and page.has_rss? %}
+  <div class="padtopmore">
+    <a href="{{ page.rss_url }}"><img src="{{ 'feed-icon-14x14' | icon_url }}" border="0" height="14" width="14" class="rss_icon" /></a> <a href="{{ page.rss_url }}">Subscribe with RSS</a>
+  </div>
+  {% elsif page and page.has_parent? and page.parent.has_rss? %}
+  <div class="padtopmore">
+    <a href="{{ page.parent.rss_url }}"><img src="{{ 'feed-icon-14x14' | icon_url }}" border="0" height="14" width="14" class="rss_icon" /></a> <a href="{{ page.parent.rss_url }}">Subscribe with RSS</a>
+  </div>
+  {% endif %}
+  
+  {% if settings.has_candidate_check? %}
+  <hr/>
+  <div align="center">
+    <a href="{{ settings.candidate_check_url }}"><img src="//nbuild.s3.amazonaws.com/images/CandidateTrustedVerify180x55.png" /></a>
+  </div>
+  {% endif %}
+  
+  {% endif %}
+  
+<!-- right columns ends -->
+
+<div style="clear: both;"></div>
+</div>

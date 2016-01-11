@@ -1,0 +1,91 @@
+<!-- <h1>Publications</h1> -->
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+<script type="text/javascript">
+  google.load("feeds", "1");
+  $(document).ready(function () {
+    var feeds = [{"feed": new google.feeds.Feed("http://talkingunion.wordpress.com/feed/"), 
+                  		"containerID": "talking-union-entries",
+                  		"link": "http://talkingunion.wordpress.com"},
+                 {"feed": new google.feeds.Feed("http://theactivist.org/blog/feed"), 
+                  "containerID": "the-activist-entries",
+                  "link": "http://theactivist.org"},
+                 {"feed": new google.feeds.Feed("{{ site.full_url }}democratic_left.rss"),
+                 "containerID": "democratic-left-entries",
+                  "link": "{{ site.full_url }}democratic_left"}
+                ];
+
+    for (var i in feeds) {
+      var containerID = feeds[i].containerID;
+      var container = document.getElementById(containerID);
+      if (!container) continue;
+      container.querySelector("a:first-child").href = feeds[i].link;
+
+      var feed = feeds[i].feed;
+      feed.includeHistoricalEntries();
+      feed.setNumEntries(5);
+
+      var callback = (function (containerID) {
+        return function(result) {
+        if (!result.error) {
+          var container = document.getElementById(containerID);
+          for (var j = 0; j < result.feed.entries.length; j++) {
+            var entry = result.feed.entries[j];
+            var link = document.createElement("a");
+            link.href = entry.link;
+            link.target = "_blank";
+            link.className = "rss-entry";
+            link.appendChild(document.createTextNode(entry.title));
+            //            var div = document.createElement("div");
+            //						div.appendChild(document.createTextNode(entry.title));
+            //            var div_content = document.createElement("div");
+            // div_content.appendChild(document.createTextNode(entry.contentSnippet));
+            //            div_content.innerHTML = entry.content;
+            // div.appendChild(div_content);
+            container.appendChild(link);
+            }
+          }
+        }
+      })(containerID);
+      feed.load(callback);
+    }
+  });
+
+</script>
+
+{% if site.slug == 'yds' %}
+
+  <div id="publication-float">
+    <div id="publications">
+      <div class="publication_row">
+      {{ page.basic.content }}
+      </div>
+    </div>
+
+    <div id="publication-entries">
+      <div class="publication_row">
+        <div class="publication" id="the-activist-entries">
+            <a target="_blank"><img src="blog.png"/></a>
+        </div>
+      </div>
+    </div>
+  </div>
+{% else %}
+  <div id="publications">
+    <div class="publication_row">
+    {{ page.basic.content }}
+    </div>
+  </div>
+
+  <div id="publication-entries">
+    <div class="publication_row">
+      {% assign publications = "talking-union|democratic-left|the-activist" | split: "|" %}
+      {% for pub in publications %}
+        <div class="publication" id="{{ pub }}-entries">
+          <a target="_blank"><img src="blog.png"/></a>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+  <br style="clear: both;"/>
+{% endif %}

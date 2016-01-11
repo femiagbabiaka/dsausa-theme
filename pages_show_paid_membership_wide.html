@@ -1,0 +1,113 @@
+{% include "breadcrumbs" %}
+
+{% if page.headline.size > 0 %}
+	<div id="headline">
+	  <h2>{{ page.headline }}</h2>
+	</div>
+{% endif %}
+
+{% if request.current_user and request.current_user.is_member? %}
+
+<p>Thank you for supporting DSA. Your contribution details are below.</p>
+
+  <div id="content">
+
+	<div class="mstatus_wrap">
+		<div class="stat-box">
+			<div class="stat">{{ request.current_user.membership_level_name }}</div>
+			<div class="label">Level</div>
+		</div>
+
+		<div class="stat-box">
+			<div class="stat">{{ request.current_user.membership_started_at | date_to_long_string }}</div>
+			<div class="label">Started</div>
+		</div>
+
+		{% if request.current_user.has_auto_renewing_membership? %}
+
+  		<div class="stat-box">
+  			<div class="stat">{{ request.current_user.membership_next_bill_date | date_to_long_string }}</div>
+  			<div class="label">
+  				Next bill date
+  			</div>
+  		</div>
+
+		{% else %}
+
+  		<div class="stat-box">
+  			<div class="stat">{{ request.current_user.membership_expires_at | date_to_long_string }}</div>
+  			<div class="label">
+  				Expires
+  			</div>
+  		</div>
+
+		{% endif %}
+
+		{% if request.current_user.has_auto_renewing_membership? %}
+		<div class="stat-box">
+			<div class="stat">{{ request.current_user.membership_renewal_info }}</div>
+			<div class="label">Automatically billed</div>
+		</div>
+
+		<div class="stat-box">
+			<div class="stat">{{ request.current_user.membership_next_bill_date | days_until }} days</div>
+			<div class="label">Until next bill</div>
+		</div>
+		{% endif %}
+
+		</div>
+
+		</div>
+    {% if request.current_user.has_auto_renewing_membership? %}
+		<div class="padtopmore">
+			<div class="destroy_link">{{ request.current_user.cancel_membership_url || gen_delete_link message: "Cancel Membership" }}</div>
+		</div>
+    {% endif %}
+  </div>
+{% else %}
+
+<div id="content">
+
+	{% if page.paid_membership.content.size > 0 %}
+	  <div id="intro">
+	    {{ page.paid_membership.content }}
+	  </div>
+	{% endif %}
+
+  <div class="padtop">
+  	{% for membership_option in page.paid_membership.membership_options %}
+      {% if membership_option.num_time_periods == 1 %}
+        {% cycle 'group1': '<div class="member_float_wide clear">', '<div class="member_float_wide" style="margin-right: 0px;">' %}
+          {% include "membership_option" %}
+      {% cycle 'group1a': '</div>', '</div>' %}
+      {% endif %}
+	  {% endfor %}
+    
+    {% if page.slug == "membership_renewal" %}
+      <h3 id="two_year">Two year renewal - save $10.</h3>
+    {% endif %}
+
+  	{% for membership_option in page.paid_membership.membership_options %}
+      {% if membership_option.num_time_periods > 1 %}
+        {% cycle 'group2': '<div class="member_float_wide clear">', '<div class="member_float_wide" style="margin-right: 0px;">' %}
+          {% include "membership_option" %}
+      {% cycle 'group2a': '</div>', '</div>' %}
+    {% endif %}
+	  {% endfor %}
+    
+  </div>
+  <div class="clear"></div>
+
+	{% if page.tags_count > 0 %}
+		<div id="page_tags">
+			{% include "page_tags" with page %}
+		</div>
+	{% endif %}
+
+  {% if page.show_stream? %}
+    {% include "page_stream" %}
+  {% endif %}
+
+</div>
+
+{% endif %}

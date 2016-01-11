@@ -1,0 +1,51 @@
+  {% if site.slug == 'fund' %}
+    <div class="button_2"><a href="/donate">Donate</a></div>
+  {% endif %}
+
+{% if site.slug == 'dsausa' or site.slug == 'dl' or site.slug == 'yds' %}
+      <div class="special_column {{ page.slug }}">
+      {% if page.is_homepage? and (site.slug == 'dsausa' or site.slug == 'yds') %}
+      {% else %}
+          {% if site.has_button1? %}
+          <div class="button_1"><a href="{{ site.button1_page.full_url_with_profile_recruiter }}">{{ site.button1_text }}</a></div>
+          <hr />
+          {% else %}
+          <div class="button_1"><a href="http://dsausa.nationbuilder.com/join">Join Us</a></div>
+          <hr />
+          
+          {% endif %}
+          
+          {% if site.has_button2? %}
+            <div class="button_2"><a href="{{ site.button2_page.full_url_with_profile_recruiter }}">{{ site.button2_text }}</a></div>
+          <hr />
+          {% else %}
+            <div class="button_2"><a href="http://dsausa.nationbuilder.com/donate">Donate</a></div>
+          <hr />
+          {% endif %}
+          
+          {% if site.has_button3? %}
+            <div class="button-3"><a href="{{ site.button3_page.full_url_with_profile_recruiter }}">{{ site.button3_text }}</a></div>
+          {% endif %}
+        {% endif %}
+      
+      {% if site.slug == 'yds' %}
+      {% else %}
+      <div class="current_campaigns_button"><a href="/current_campaigns">Current Campaigns</a></div>
+<!--      <div class="sidebar_text"> {% subpage "current_campaigns" with "basic_excerpt" %} </div> -->
+      
+      <hr />
+        <div class="get_involved_button"><a href="/get_involved">Get Involved</a></div>
+<!--        <div class="sidebar_text"> {% subpage "get_involved" with "basic_excerpt" %} </div> -->
+      {% endif %}
+    </div>
+
+<div id="upcoming_event">
+  <h3><a href="/calendar">Upcoming Events</a></h3>
+{% subpage "calendar" with "event_upcoming" %}
+</div>
+
+{% if site.has_signup_page? %}
+
+    <div class="email_signup_container">{% include "signup_form" with site.signup_page %}</div>
+    {% endif %}
+  {% endif %}

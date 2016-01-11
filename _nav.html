@@ -1,0 +1,33 @@
+<div class="nav_container">
+  <div class="navbg">
+    <ul id="topnav">
+        {% for child in site.root_nav_pages %}
+          {% if child.leaf? or child.nav_children.size == 0 %}
+            {% if child.is_or_is_ancestor_of_current_page? %}<li class="active{% if forloop.first %}_left{% endif %}"><div class="block"></div>{% else %}<li class="nodrop{% if forloop.first %}_left{% endif %}">{% endif %}
+      				<a href="{{ child.url }}">{{ child.name }}</a></li>
+          {% else %}
+            {% if child.is_or_is_ancestor_of_current_page? %}<li class="active_drop{% if forloop.first %}_left{% endif %}">{% else %}<li class="drop{% if forloop.first %}_left{% endif %}">{% endif %}
+				      <div class="block"></div>
+
+				      <a href="{{ child.url }}">{{ child.name }}</a>
+
+                <span class="sub_menu">
+
+									{% if site.show_parent_in_nav_dropdown? %}
+                    <a href="{{ child.url }}">{{ child.name }}</a>
+									{% endif %}
+                  {% for child2 in child.nav_children %}
+                    {% if child2.is_or_is_ancestor_of_current_page? %}
+                      <a class="active_subsection" href="{{ child2.url }}">{{ child2.name }}</a>
+                    {% else %} 
+                      <a href="{{ child2.url }}">{{ child2.name }}</a>
+                    {% endif %}
+                  {% endfor %}
+              </span>
+            </li>
+          {% endif %}
+        {% endfor %}
+    </ul>
+    <div style="clear: both;"></div>
+  </div>  
+</div>

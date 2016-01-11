@@ -1,0 +1,18 @@
+      	<div class="member_wrap_wide">
+      	  <h3>{{ membership_option.membership_level_name }}</h3>
+      	    <div class="padtopless padbottomless">
+      	      {% if membership_option.auto_renew? %}
+        	      <b>{{ membership_option.amount }}</b> every {% if membership_option.num_time_periods > 1 %}{{ membership_option.num_time_periods }}{% endif %} {{ membership_option.time_period_type | downcase }}
+        	    {% else %}
+        	      <b>{{ membership_option.amount }}</b> for {{ membership_option.num_time_periods }} {{ membership_option.time_period_type | downcase }}
+        	    {% endif %}
+        	  </div>
+        	  {% if membership_option.has_membership_level_badge %}
+        	    <span class="badge">{{ membership_option.membership_level_badge }}</span>
+        	  {% endif %}
+        	    <hr />
+          	  <div class="member_blurb">{{ membership_option.description }}</div>
+      	  <div class="padtopmore submit_link_wrap">
+        	  <div class="submit_link"><a href="{{ membership_option.purchase_url }}">Process</a></div>
+      	  </div>
+      	</div>
